@@ -50,7 +50,7 @@ print(df)
 
 df.to_csv(f'processed/{filename}-processed.csv')
 
-fig = px.line(df, x='human time', y='delta', title='Time delta', 
-                labels={'human time': 'Time', 
+fig = px.line(df, x='timestamp', y='delta', title='Time delta', 
+                labels={'timestamp': 'Time', 
                         'delta': 'Time delta (s)'})
 fig.show(renderer='browser')
