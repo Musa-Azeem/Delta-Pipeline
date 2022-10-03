@@ -50,9 +50,14 @@ print(df)
 
 df.to_csv(f'processed/{filename}-processed.csv')
 
-fig = px.line(df, x='human time', y=['acc_x', 'acc_y', 'acc_z'], 
+# fig = px.line(df.iloc[:len(df)], x='timestamp', y='delta', title='Time delta', 
+#                 labels={'timestamp': 'Time', 
+#                         'delta': 'Time delta (s)'})
+# fig.show(renderer='browser')
+
+fig = px.line(df, x='timestamp', y=['acc_x', 'acc_y', 'acc_z'], 
             #   color='activity',
               title='Accelerometer Data',
-              labels={'human time': 'Time', 'variable': 'Legend'})
+              labels={'timestamp': 'Time', 'variable': 'Legend'})
 fig.update_layout(yaxis_title="Acceleration (m/s^2)")
 fig.show(renderer='browser')
