@@ -55,7 +55,7 @@ df.to_csv(f'processed/{filename}-processed.csv')
 #                         'delta': 'Time delta (s)'})
 # fig.show(renderer='browser')
 
-fig = px.line(df, x='timestamp', y=['acc_x', 'acc_y', 'acc_z'], 
+fig = px.line(df, x='timestamp', y=['acc_x', 'acc_y', 'acc_z', 'label'], 
             #   color='activity',
               title='Accelerometer Data',
               labels={'timestamp': 'Time', 'variable': 'Legend'})
