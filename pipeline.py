@@ -21,6 +21,10 @@ for file in os.listdir(dir):
         with open(f'{dir}/{file}') as f:
             starttime_millis = int(f.readline().rstrip()[17:])
         session = pd.read_csv(f'{dir}/{file}', skiprows=1)
+    elif file.startswith("Info"):
+        continue
+    elif file.startswith("puffs"):
+        continue
     else:
         tmp = pd.read_csv(f'{dir}/{file}', skiprows=1)
         df = pd.concat([df, tmp], ignore_index=True)
