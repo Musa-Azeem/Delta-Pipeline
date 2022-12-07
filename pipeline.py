@@ -79,9 +79,9 @@ if __name__ == '__main__':
     # anytime the 'real time' in raw is in this range (greater than stop and less than start), make 'in session' of that row = 1
 
     # Add smoking status to raw
-    raw['is smoking'] = 0
+    raw['is smoking'] = 10
     for i in range(len(smoking_sessions)):
-        raw.loc[(raw['real time'] >= smoking_sessions['starttime'][i]) & (raw['real time'] <= smoking_sessions['stoptime'][i]), 'is smoking'] = 1
+        raw.loc[(raw['real time'] >= smoking_sessions['starttime'][i]) & (raw['real time'] <= smoking_sessions['stoptime'][i]), 'is smoking'] = 15
         print(raw)
     # get time delta at each sample
     # df = raw
