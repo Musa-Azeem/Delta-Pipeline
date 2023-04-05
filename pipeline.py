@@ -19,13 +19,12 @@ event_id_mapping = {
 }
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Usage: python3 timedeltas.py [path-to-data-directory]")
+    if len(sys.argv) != 3:
+        print("Usage: python3 timedeltas.py [path-to-data-directory] [timedeltas | data]")
         exit(1)
 
-    os.system('mkdir -p processed')
-
     dir = sys.argv[1]
+    timedelta_mode = sys.argv[2] == 'timedeltas'
 
     events = pd.DataFrame()
     info = {}
@@ -88,10 +87,28 @@ if __name__ == '__main__':
     # anytime the 'real time' in raw is in this range (greater than stop and less than start), make 'in session' of that row = 1
 
     # Add smoking status to raw
-    raw['is smoking'] = 10
+    raw['is smoking'] = 10      # Default value (not smoking) is 10
     for i in range(len(smoking_sessions)):
+        # set value to 15 (smoking) if within the range of a smoking session
         raw.loc[(raw['real time'] >= smoking_sessions['starttime'][i]) & (raw['real time'] <= smoking_sessions['stoptime'][i]), 'is smoking'] = 15
 
-    fig = px.line(raw, x='readable time', y=['is smoking', 'acc_x', 'acc_y', 'acc_z'], title='Time delta', 
+    fig = px.line(raw, x='readable time', y=['is smoking', 'acc_x', 'acc_y', 'acc_z'], title='Accelerometer data', 
                     labels={'readable time': 'Time Since start'}) 
+    # fig.show(renderer='browser')
+
+    if timedelta_mode:
+        # Calculate and display timedeltas
+        # get time delta at each sample
+        deltas = []
+        for i, timestamp in enumerate(raw['timestamp']):
+            if i == 0:
+                deltas.append(np.nan)
+                continue
+            # get time since last sample, convert to Hz
+            deltas.append( (raw['timestamp'][i] - raw['timestamp'][i-1]) / 1e9)
+        raw['delta'] = deltas
+
+        fig = px.line(raw, y='delta', title='Time delta', 
+                labels={'delta': 'Time delta (s)'})
+    
     fig.show(renderer='browser')
